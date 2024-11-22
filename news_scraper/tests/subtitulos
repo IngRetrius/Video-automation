@@ -1,0 +1,118 @@
+from moviepy.editor import VideoFileClip, CompositeVideoClip, ColorClip, TextClip
+from news_scraper.utils.video_generator import VideoGenerator
+import os
+import numpy
+import random
+# tests/subtitulos.py
+
+from news_scraper.utils.video_generator import VideoGenerator
+from moviepy.editor import VideoFileClip
+
+def test_subtitulos():
+    from moviepy.editor import VideoFileClip, CompositeVideoClip, ColorClip, TextClip
+    import random
+    
+    # Texto de prueba
+    texto_prueba = """ESTE ES UN TEXTO DE PRUEBA
+    PARA VER COMO SE VEN LOS SUBTÍTULOS
+    CON MÚLTIPLES LÍNEAS
+    QUE PODEMOS RESALTAR"""
+    
+    # Colores para resaltado
+    highlight_colors = [
+        '#00FFFF',  # Cian brillante
+        '#FF0000',  # Rojo puro
+        '#FF1493',  # Rosa fuerte
+        '#00FF00',  # Verde neón
+    ]
+    
+    try:
+        # Fondo amarillo
+        background = ColorClip(
+            size=(1080, 1920), 
+            color=(255, 255, 0)
+        ).set_duration(5.0)
+        
+        text_clips = []
+        y_position = 400
+        line_spacing = 140  # Espaciado ajustado
+        
+        for linea in texto_prueba.split('\n'):
+            palabras = linea.strip().split()
+            words_to_highlight = min(len(palabras), 2)
+            highlight_indices = random.sample(range(len(palabras)), words_to_highlight)
+            
+            # Calcular ancho total
+            temp_clips = []
+            total_width = 0
+            for palabra in palabras:
+                temp_clip = TextClip(
+                    palabra,
+                    font='impact',
+                    fontsize=80,
+                    color='white',
+                    method='label'
+                )
+                total_width += temp_clip.w + 20
+                temp_clip.close()
+            
+            x_position = (1080 - total_width) // 2
+            line_clips = []
+            
+            for i, palabra in enumerate(palabras):
+                is_highlighted = i in highlight_indices
+                color = random.choice(highlight_colors) if is_highlighted else 'white'
+                
+                # Borde negro grueso
+                stroke = TextClip(
+                    palabra,
+                    font='impact',
+                    fontsize=80,
+                    color='black',
+                    stroke_color='black',
+                    stroke_width=10,  # Borde más grueso
+                    method='label'
+                ).set_duration(5.0)
+                stroke = stroke.set_position((x_position, y_position))
+                line_clips.append(stroke)
+                
+                # Texto principal
+                word = TextClip(
+                    palabra,
+                    font='impact',
+                    fontsize=80,
+                    color=color,
+                    stroke_width=0,  # Sin borde adicional
+                    method='label'
+                ).set_duration(5.0)
+                word = word.set_position((x_position, y_position))
+                line_clips.append(word)
+                
+                x_position += word.w + 20
+            
+            text_clips.extend(line_clips)
+            y_position += line_spacing
+        
+        # Clip final
+        final_clip = CompositeVideoClip(
+            [background] + text_clips,
+            size=(1080, 1920)
+        ).set_duration(5.0)
+        
+        # Guardar video
+        final_clip.write_videofile(
+            "test_subtitulos_final.mp4",
+            fps=30,
+            codec='libx264',
+            audio=False
+        )
+        
+    finally:
+        # Limpiar recursos
+        if 'final_clip' in locals(): final_clip.close()
+        for clip in text_clips:
+            clip.close()
+        background.close()
+
+if __name__ == "__main__":
+    test_subtitulos()

@@ -1,0 +1,90 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Entorno virtual
+venv/
+env/
+ENV/
+
+# Entorno y configuración
+.env
+.env.*
+!.env.example
+
+# IDEs y editores
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+
+# Directorios específicos del proyecto
+storage/*
+!storage/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Mantener estructura de storage pero ignorar contenido
+storage/media/audio/*
+!storage/media/audio/.gitkeep
+storage/media/background_videos/*
+!storage/media/background_videos/.gitkeep
+storage/media/background_videos1/*
+!storage/media/background_videos1/.gitkeep
+storage/media/backgrounds/*
+!storage/media/backgrounds/.gitkeep
+storage/media/pictures/*
+!storage/media/pictures/.gitkeep
+storage/media/video/*
+!storage/media/video/.gitkeep
+storage/backups/*
+!storage/backups/.gitkeep
+storage/reports/*
+!storage/reports/.gitkeep
+storage/temp/*
+!storage/temp/.gitkeep
+
+# Archivos multimedia
+*.mp4
+*.wav
+*.mp3
+*.jpg
+*.png
+*.avi
+*.mov
+*.gif
+
+# Testing y cobertura
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Archivos de registro
+*.log
+*.log.*
